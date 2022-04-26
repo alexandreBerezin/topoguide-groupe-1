@@ -58,7 +58,7 @@ def sorties(request, itineraire_id):
         sorties_list = Sortie.objects.filter(itineraire=itineraire).all()
         try :
             map_infos = Map.objects.get(itineraire=itineraire)
-            map = folium.Map([map_infos.zone_geo_latitude, map_infos.zone_geo_longitude], width='100%', height='70%',position='relative', min_zoom=0, max_zoom=50, zoom_start=14)
+            map = folium.Map([map_infos.zone_geo_latitude, map_infos.zone_geo_longitude], width='100%', height='85%',position='relative', min_zoom=0, max_zoom=50, zoom_start=13)
             folium.Marker(location=[map_infos.latitude_depart, map_infos.longitude_depart],tooltip='Départ : ' + map_infos.depart).add_to(map)
             folium.Marker(location=[map_infos.latitude_arrivee, map_infos.longitude_arrivee],tooltip='Arrivée : ' + map_infos.arrivee).add_to(map)
             map=map._repr_html_() #updated
