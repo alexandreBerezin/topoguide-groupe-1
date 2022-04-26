@@ -1,4 +1,18 @@
 {% extends "itineraires/base.html" %}
+
+{% block nav-itineraires %}
+<li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Itinéraires
+  </a>
+  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+    {% for itineraire in itineraire_list %}
+    <li><a class="dropdown-item" href="{%url 'sorties' itineraire_id=itineraire.id %}">{{ itineraire.titre }}</a></li>
+    {% endfor %}
+  </ul>
+</li>
+{% endblock%}
+
 {% block content %}
 
       <form action="{% url 'itineraires' %}" method="get">

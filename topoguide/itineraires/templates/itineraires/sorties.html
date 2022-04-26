@@ -1,4 +1,11 @@
 {% extends "itineraires/base.html" %}
+
+{% block nav-ajoutsortie %}
+<li class="nav-item">
+  <a class="nav-link" href="{%url 'nouvelle_sortie' itineraire_id=itineraire.id%}">Ajouter une sortie</a>
+</li>
+{% endblock%}
+
 {% block content %}
     <div class="container mt-3">
         <h2> {{ itineraire.titre }} </h2>
