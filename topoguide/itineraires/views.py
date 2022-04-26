@@ -40,7 +40,8 @@ def itineraires(request):
 # Vue accessible pour les utilisateurs connectés ou non de la même manière
 def sorties(request, itineraire_id):
     """ Une fonction qui permet à partir de la requête utilisateur d'obtenir les sorties associées à un
-    itinéraire. 
+    itinéraire. Elle permet également la création d'une carte, si les coordonnées du point de départ et 
+    du point d'arrivée pour l'itinéraire sont dans la base de données, sinon cela ne change rien.
 
     Args:
         request : requête de l'utilisateur GET
