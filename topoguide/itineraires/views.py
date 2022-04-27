@@ -1,10 +1,12 @@
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from .forms import SortieForm
 from .models import Itineraire, Sortie, Map
 import folium
+
 
 # Create your views here.
 
@@ -107,7 +109,7 @@ def nouvelle_sortie(request, itineraire_id):
     Returns:
         render(): réponse Http associant la fonction, le template associé (nouvelle_sortie.html) et le contexte
     """
-    
+    new = True
     submitted = False
     if request.method == 'POST':
         form = SortieForm(request.POST)
@@ -121,7 +123,7 @@ def nouvelle_sortie(request, itineraire_id):
         form = SortieForm
         if submitted in request.GET:
             submitted = True
-    return render(request, 'itineraires/nouvelle_sortie.html', {'form' : form, 'itineraire_id' : itineraire_id, 'submitted' : submitted})
+    return render(request, 'itineraires/nouvelle_sortie.html', {'new': new,'form' : form, 'itineraire_id' : itineraire_id, 'submitted' : submitted})
 
 # vue accessible seulement pour un utilisateur qui possède un compte et est authentifié 
 @login_required
@@ -138,11 +140,12 @@ def modif_sortie(request, itineraire_id, sortie_id):
     Returns:
         render(): réponse Http associant la fonction, le template associé (nouvelle_sortie.html) et le contexte
     """
+    new = False
     submitted = False
     sortie = get_object_or_404(Sortie, id=sortie_id)
     if request.method == 'POST':
         form = SortieForm(request.POST or None, instance=sortie)
-        if form.is_valid :
+        if form.is_valid() :
             form = form.save(commit=False)
             form.utilisateur = request.user
             form.itineraire = Itineraire.objects.get(pk=itineraire_id)
@@ -150,4 +153,4 @@ def modif_sortie(request, itineraire_id, sortie_id):
             submitted=True
     else : 
         form = SortieForm(request.POST or None, instance=sortie)
-    return render(request, 'itineraires/nouvelle_sortie.html', {'form' : form, 'itineraire_id' : itineraire_id, 'sortie_id' : sortie_id, 'submitted' : submitted})
+    return render(request, 'itineraires/nouvelle_sortie.html', {'new':new,'form' : form, 'itineraire_id' : itineraire_id, 'sortie_id' : sortie_id, 'submitted' : submitted})
