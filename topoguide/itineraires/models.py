@@ -50,6 +50,12 @@ class Sortie(models.Model):
         default='MO',
     )
     difficulte_ressentie = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
+    
+    '''Paramètres pour EXtension 1'''
+    photo1 = models.ImageField(upload_to='photo/',default='default.jpg')
+     
+    
+    
     def __str__(self):
         """ Permet de renvoyer avec la fonction string, le nom d'utilisateur correctement pour visualiser """
         return self.utilisateur.username
