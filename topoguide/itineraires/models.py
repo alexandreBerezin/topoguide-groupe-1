@@ -22,6 +22,14 @@ class Itineraire(models.Model):
         """ Permet de renvoyer avec la fonction string, le titre correctement pour visualiser """
         return self.titre
 
+class Commentaire(models.Model):
+    utilisateur = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    sortie = models.ForeignKey(Sortie, on_delete=models.CASCADE)
+    date_sortie = models.DateField()
+    texte = models.CharField(max_length=2000)
+    statut = models.IntegerField()
+
+
 class Sortie(models.Model):
     """ Modèle qui permet de générer les différents champs d'informations pour une sortie
     dans la base de données et d'y accéder à partir des différents champs explicités ci-dessous
@@ -59,3 +67,4 @@ class Sortie(models.Model):
     def __str__(self):
         """ Permet de renvoyer avec la fonction string, le nom d'utilisateur correctement pour visualiser """
         return self.utilisateur.username
+    
