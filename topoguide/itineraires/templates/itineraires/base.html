@@ -1,66 +1,64 @@
 <!doctype html>
 <html lang="en">
-  
+    <title> Topoguide </title>
+    <meta name="description" content="Retrouvez les itinéraires de randonnées."/>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="keywords" content="Itinéraire, Randonnées, Sorties"/>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" ></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" 
+          rel="stylesheet" 
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" 
+          crossorigin="anonymous"/>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
-
     <header>
-      <!-- Navbar -->
-      {%load static %}
-      <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #7e7e68;">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="">
-            <img src="{% static 'itineraires/images/topoguide.png' %}" alt="Topoguide Logo" style="width:40px;" class="img-fluid"> 
-          </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="collapsibleNavbar">
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link" href="{%url 'itineraires'%}">Accueil</a>
-              </li>
-              {% block nav-itineraires %}
-
-              {% endblock%}
-              
-              {% block nav-ajoutsortie %}
-
-              {% endblock%}
-            </ul>
-          </div>
-          {% if user.is_authenticated%}
-              <a href="{%url 'logout'%}" class="btn btn-danger"> Logout </a>
-          {% else %}
-              <a href="{%url 'login'%}" class="btn btn-success"> Login </a>
-          {% endif %}
+        <!-- Navbar -->
+        {% load static %}
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #7e7e68;">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="">
+                    <img src="{% static 'itineraires/images/topoguide.png' %}"
+                         alt="Topoguide Logo"
+                         style="width:40px;"
+                         class="img-fluid"/>
+                </a>
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapsibleNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'itineraires' %}">Accueil</a>
+                        </li>
+                        {% block nav-itineraires %}{% endblock nav-itineraires %}
+                        {% block nav-ajoutsortie %}{% endblock nav-ajoutsortie %}
+                    </ul>
+                </div>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-success">Login</a>
+                {% endif %}
+            </div>
+        </nav>
+        <!-- Navbar -->
+        <!-- Jumbotron -->
+        <div class=" container-full-bg p-5 text-center shadow-1-strong rounded mb-5 text-black "
+             style="background-image: url({% static 'itineraires/images/background.png' %});height: 350px;">
+            <h1 class="mb-3">TOPOGUIDE</h1>
+            <h4 class="mb-3">JOURNAL DE RANDONNÉES</h4>
         </div>
-      </nav>
-      <!-- Navbar -->
-
-      <!-- Jumbotron -->
-      <div class=" container-full-bg p-5 text-center shadow-1-strong rounded mb-5 text-black "
-      style="background-image: url({% static 'itineraires/images/background.png'%});height: 350px;">
-        <h1 class="mb-3">TOPOGUIDE</h1>
-        <h4 class="mb-3">JOURNAL DE RANDONNÉES</h4>
-      </div>
-
     </header>
-
     <!-- Corps de la page - avec block content en fonction du template -->
     <body>
-      <div class="content container">
-          <div class="row">
-              {% block content %}
-              {% endblock %}
-          </div>
-      </div>
-  </body>
-
+        <div class="content container">
+            <div class="row">
+                {% block content %}{% endblock content %}
+            </div>
+        </div>
+    </body>
 </html>
