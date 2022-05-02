@@ -69,6 +69,8 @@ class Commentaire(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     texte = models.CharField(max_length=2000)
     
+    cache = models.BooleanField(default=False)
+    
     VISIBILITE = [
     ('PB', 'Public'),
     ('PR', 'Privé'),]
@@ -78,5 +80,8 @@ class Commentaire(models.Model):
         choices=VISIBILITE,
         default='PB',
     )
+    
+
+    
 
     

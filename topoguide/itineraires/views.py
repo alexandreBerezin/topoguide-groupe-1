@@ -79,7 +79,9 @@ def details(request, sortie_id, itineraire_id):
     """
     try:
         sortie_detail = Sortie.objects.get(pk=sortie_id)
-        commentaires = Commentaire.objects.filter(sortie = sortie_detail)
+        #On récupère les commentaires non cachées et publics
+        
+        commentaires = Commentaire.objects.filter(sortie = sortie_detail).filter(cache = False)
         nouveau_commentaire = CommentaireForm(request.POST or None, request.FILES or None)
         if request.method == 'POST':
             if nouveau_commentaire.is_valid() :
