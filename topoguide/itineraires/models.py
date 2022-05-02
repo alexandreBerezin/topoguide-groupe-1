@@ -61,8 +61,7 @@ class Sortie(models.Model):
     def __str__(self):
         """ Permet de renvoyer avec la fonction string, le nom d'utilisateur correctement pour visualiser """
         return self.utilisateur.username
-    
-    
+
 class Commentaire(models.Model):
     utilisateur = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     sortie = models.ForeignKey(Sortie, on_delete=models.CASCADE)
@@ -82,6 +81,18 @@ class Commentaire(models.Model):
     )
     
 
-    
+class Map(models.Model):
+    """ Modèle qui permet de générer les informations des localisations du départ et de l'arrivée pour un
+    itinéraire existant
+    """
+    itineraire = models.ForeignKey(Itineraire, on_delete=models.CASCADE)
+    depart = models.CharField(max_length=200)
+    latitude_depart = models.FloatField()
+    longitude_depart = models.FloatField()
+    arrivee = models.CharField(max_length=200)
+    latitude_arrivee = models.FloatField()
+    longitude_arrivee = models.FloatField()
+    zone_geo_latitude = models.FloatField()
+    zone_geo_longitude = models.FloatField()
 
     

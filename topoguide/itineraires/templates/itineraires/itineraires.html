@@ -1,77 +1,124 @@
 {% extends "itineraires/base.html" %}
-{% block content %}
 
-      <form action="{% url 'itineraires' %}" method="get">
+{% block nav-itineraires %}
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle"
+           href="#"
+           id="navbarDropdown"
+           role="button"
+           data-bs-toggle="dropdown"
+           aria-expanded="false">
+            Itinéraires
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            {% for itineraire in itineraire_list %}
+                <li>
+                    <a class="dropdown-item"
+                       href="{% url 'sorties' itineraire_id=itineraire.id %}">{{ itineraire.titre }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </li>
+{% endblock nav-itineraires %}
+
+{% block content %}
+    <form action="{% url 'itineraires' %}" method="get">
         <div class="input-group">
-            <input type="search" class="form-control rounded" placeholder="Rechercher un itinéraire..." aria-label="Search" aria-describedby="search-addon" name="search"/>
-            <button type="submit" class="btn btn-outline-primary"> Rechercher</button>
+            <input type="search"
+                   class="form-control rounded"
+                   placeholder="Rechercher un itinéraire..."
+                   aria-label="Search"
+                   aria-describedby="search-addon"
+                   name="search"/>
+            <button type="submit" class="btn btn-outline-primary">Rechercher</button>
         </div>
     </form>
-        <div class="container mt-3">
-            <h2> Itinéraires : </h2>
-            <p></p>
-      {% if itineraire_list%}
-      <table class="table table-hover">
-      <thead>
-          <tr>
-            <th scope="row"> </th>
-            <th scope="col"> Nom </th>
-            <th scope="col"> Point de départ </th>
-            <th scope="col"> Description </th>
-            <th scope="col"> Altitude de départ</th>
-            <th scope="col"> Altitude minimale </th>
-            <th scope="col"> Altitude maximale </th>
-            <th scope="col"> Dénivelé positif cumulé</th>
-            <th scope="col"> Dénivelé négatif cumulé</th>
-            <th scope="col"> Durée estimée </th>
-            <th scope="col"> Difficulté estimée </th>
-          </tr>
-      </thead> 
-      <tbody>  
-      {% comment %} si l'utilisateur faitune recherche, on affiche le résultat de la recherche {% endcomment %}
-      {% if search %} 
-        {% for itineraire in itineraire_list %}
-            {% if search|lower in itineraire.titre|lower %}
-                <tr>
-                    <th scope="row"> </th>
-                    <td><a href="{%url 'sorties' itineraire_id=itineraire.id %}">{{ itineraire.titre }}</a></td>
-                    <td>{{ itineraire.point_depart }}</td>
-                    <td>{{ itineraire.description }} </td>
-                    <td>{{ itineraire.altitude_depart }} m</td>
-                    <td>{{ itineraire.altitude_max }} m</td>
-                    <td>{{ itineraire.altitude_min}} m</td>
-                    <td>{{ itineraire.denivele_pos}} m</td>
-                    <td>{{ itineraire.denivele_neg}} m</td>
-                    <td>{{ itineraire.duree_estimee}} h</td>
-                    <td>{{ itineraire.difficulte_estimee}} / 5</td>
-                </tr>
-            {% endif %}
-        {% endfor %}
-        {% comment %} sinon on affiche tous les itineraires {% endcomment %}
-      {% else %}   
-        {% for itineraire in itineraire_list %}
-                <tr>
-                  <th scope="row"> </th>
-                  <td><a href="{%url 'sorties' itineraire_id=itineraire.id %}">{{ itineraire.titre }}</a></td>
-                  <td>{{ itineraire.point_depart }}</td>
-                  <td>{{ itineraire.description }} </td>
-                  <td>{{ itineraire.altitude_depart }} m</td>
-                  <td>{{ itineraire.altitude_max }} m</td>
-                  <td>{{ itineraire.altitude_min}} m</td>
-                  <td>{{ itineraire.denivele_pos}} m</td>
-                  <td>{{ itineraire.denivele_neg}} m</td>
-                  <td>{{ itineraire.duree_estimee}} h</td>
-                  <td>{{ itineraire.difficulte_estimee}} / 5</td>
-                </tr>
-        {% endfor %}
-      {% endif %}
-      </tbody>
-      </table>
-    {% else %}
-        <p> Aucun itinéraire.</p>
-    {% endif %}
-
-
-            
-      </div>
-      {% endblock %}
+    <div class="container mt-3">
+        <h2>Itinéraires :</h2>
+        {% if itineraire_list %}
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="row"></th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Point de départ</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Altitude de départ</th>
+                        <th scope="col">Altitude minimale</th>
+                        <th scope="col">Altitude maximale</th>
+                        <th scope="col">Dénivelé positif cumulé</th>
+                        <th scope="col">Dénivelé négatif cumulé</th>
+                        <th scope="col">Durée estimée</th>
+                        <th scope="col">Difficulté estimée</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% comment %} si l'utilisateur faitune recherche, on affiche le résultat de la recherche {% endcomment %}
+                    {% if search %}
+                        {% for itineraire in itineraire_list %}
+                            {% if search|lower in itineraire.titre|lower %}
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td>
+                                        <a href="{% url 'sorties' itineraire_id=itineraire.id %}">{{ itineraire.titre }}</a>
+                                    </td>
+                                    <td>{{ itineraire.point_depart }}</td>
+                                    <td>{{ itineraire.description }}</td>
+                                    <td>{{ itineraire.altitude_depart }} m</td>
+                                    <td>{{ itineraire.altitude_max }} m</td>
+                                    <td>{{ itineraire.altitude_min }} m</td>
+                                    <td>{{ itineraire.denivele_pos }} m</td>
+                                    <td>{{ itineraire.denivele_neg }} m</td>
+                                    <td>{{ itineraire.duree_estimee }} h</td>
+                                    <td>{{ itineraire.difficulte_estimee }} / 5</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        {% comment %} sinon on affiche tous les itineraires {% endcomment %}
+                    {% else %}
+                        {% for itineraire in itineraire_list %}
+                            <tr>
+                                <th scope="row">
+                                </th>
+                                <td>
+                                    <a href="{% url 'sorties' itineraire_id=itineraire.id %}">{{ itineraire.titre }}</a>
+                                </td>
+                                <td>
+                                    {{ itineraire.point_depart }}
+                                </td>
+                                <td>
+                                    {{ itineraire.description }}
+                                </td>
+                                <td>
+                                    {{ itineraire.altitude_depart }} m
+                                </td>
+                                <td>
+                                    {{ itineraire.altitude_max }} m
+                                </td>
+                                <td>
+                                    {{ itineraire.altitude_min }} m
+                                </td>
+                                <td>
+                                    {{ itineraire.denivele_pos }} m
+                                </td>
+                                <td>
+                                    {{ itineraire.denivele_neg }} m
+                                </td>
+                                <td>
+                                    {{ itineraire.duree_estimee }} h
+                                </td>
+                                <td>
+                                    {{ itineraire.difficulte_estimee }} / 5
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>
+                Aucun itinéraire.
+            </p>
+        {% endif %}
+    </div>
+{% endblock content %}

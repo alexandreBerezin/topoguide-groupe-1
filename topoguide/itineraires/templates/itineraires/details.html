@@ -1,39 +1,41 @@
 {% extends "itineraires/base.html" %}
-
 {% block content %}
-    <body>
         <div class="container mt-3">
-            <h2> <a href="{%url 'sorties' itineraire_id=sortie_detail.itineraire.id %}"> {{sortie_detail.itineraire.titre}} </a> - Sortie de {{ sortie_detail.utilisateur.username }} </h2>
-                <br/>  <br/>
-            {% if sortie_detail%}
+            <h2>
+                <a href="{% url 'sorties' itineraire_id=sortie_detail.itineraire.id %}">{{ sortie_detail.itineraire.titre }}</a> - Sortie de {{ sortie_detail.utilisateur.username }}
+        </h2>
+        <br />
+        <br />
+        {% if sortie_detail %}
             <table class="table table-hover">
-            <tbody>  
+                <tbody>
                     <tr>
-                        <th scope="row"> Date </th>
+                        <th scope="row">Date</th>
                         <td>{{ sortie_detail.date_sortie }}</td>
-                      </tr>
-                      <tr>
-                        <th scope="row"> Durée réelle </th>
+                    </tr>
+                    <tr>
+                        <th scope="row">Durée réelle</th>
                         <td>{{ sortie_detail.duree_reelle }} h</td>
-                      </tr>
-                      <tr>
-                        <th scope="row"> Nombre de participants </th>
+                    </tr>
+                    <tr>
+                        <th scope="row">Nombre de participants</th>
                         <td>{{ sortie_detail.nombre_participants }}</td>
-                      </tr>
-                      <tr>
-                        <th scope="row"> Type de randonneurs </th>
+                    </tr>
+                    <tr>
+                        <th scope="row">Type de randonneurs</th>
                         <td>{{ sortie_detail.get_experience_groupe_display }}</td>
-                      </tr>
-                      <tr>
-                        <th scope="row"> Météo </th>
+                    </tr>
+                    <tr>
+                        <th scope="row">Météo</th>
                         <td>{{ sortie_detail.get_meteo_display }}</td>
+
                       </tr>
                       <tr>
                         <th scope="row"> Difficulté ressentie</th>
                         <td>{{ sortie_detail.difficulte_ressentie }} / 5  </td>
                       </tr>
-            </tbody>
-            </table> 
+                </tbody>
+            </table>
 
             <table>
               <tr>
@@ -46,29 +48,26 @@
             <h3> Commentaires </h3>
             {% for commentaire in commentaires %}
             
-            <div>
-            <p> par {{commentaire.utilisateur}} le {{commentaire.date}}  : <br>
-               {{commentaire.texte}} 
-             </p>
-            </div>
+              <div>
+              <p> par {{commentaire.utilisateur}} le {{commentaire.date}}  : <br>
+                 {{commentaire.texte}} 
+               </p>
+              </div>
             
             {% endfor %}
 
-
-
-            {% if user.is_authenticated%}
-            <form action="" method="POST" enctype="multipart/form-data">
-              {% csrf_token %}
-              {{nouveau_commentaire.as_p}}
-            <center>
-              <input class="btn btn-success" type="submit" value="Envoyer">
-              <a href="{% url 'details' itineraire_id=sortie_detail.itineraire.id sortie_id=sortie_detail.id %}" class="btn btn-danger"> Annuler </a>
-            </center>
-          </form>
-            {% endif %} 
-
-            {% endif %} 
-            <br/> <br/>
-      </div>
-      {% endblock %}
-
+              {% if user.is_authenticated%}
+                <form action="" method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  {{nouveau_commentaire.as_p}}
+                  <center>
+                    <input class="btn btn-success" type="submit" value="Envoyer">
+                    <a href="{% url 'details' itineraire_id=sortie_detail.itineraire.id sortie_id=sortie_detail.id %}" class="btn btn-danger"> Annuler </a>
+                  </center>
+                </form>
+              {% endif %} 
+        {% endif %}
+        <br />
+        <br />
+    </div>
+{% endblock content %}
