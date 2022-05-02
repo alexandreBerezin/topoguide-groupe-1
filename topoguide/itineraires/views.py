@@ -130,13 +130,15 @@ def modif_sortie(request, itineraire_id, sortie_id):
     submitted = False
     sortie = get_object_or_404(Sortie, id=sortie_id)
     if request.method == 'POST':
-        form = SortieForm(request.POST or None, instance=sortie)
+        form = SortieForm(request.POST or None, request.FILES or None, instance=sortie)
         if form.is_valid :
             form = form.save(commit=False)
             form.utilisateur = request.user
             form.itineraire = Itineraire.objects.get(pk=itineraire_id)
             form.save()
             submitted=True
+        else:
+            print("FORM NON VALIDE")
     else : 
         form = SortieForm(request.POST or None, instance=sortie)
     return render(request, 'itineraires/nouvelle_sortie.html', {'form' : form, 'itineraire_id' : itineraire_id, 'sortie_id' : sortie_id, 'submitted' : submitted})

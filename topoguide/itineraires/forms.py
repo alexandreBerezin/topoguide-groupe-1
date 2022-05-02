@@ -8,7 +8,7 @@ from .models import Sortie
 class SortieForm(ModelForm):
     class Meta:
         model = Sortie
-        fields = ('date_sortie','duree_reelle','nombre_participants','experience_groupe','meteo','difficulte_ressentie')
+        fields = ('date_sortie','duree_reelle','nombre_participants','experience_groupe','meteo','difficulte_ressentie','photo1')
         labels = {
             'date_sortie': 'Date de la sortie',
             'duree_reelle': 'Durée de la sortie',
