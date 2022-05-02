@@ -28,13 +28,44 @@
                     <tr>
                         <th scope="row">Météo</th>
                         <td>{{ sortie_detail.get_meteo_display }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Difficulté ressentie</th>
-                        <td>{{ sortie_detail.difficulte_ressentie }} / 5</td>
-                    </tr>
+
+                      </tr>
+                      <tr>
+                        <th scope="row"> Difficulté ressentie</th>
+                        <td>{{ sortie_detail.difficulte_ressentie }} / 5  </td>
+                      </tr>
                 </tbody>
             </table>
+
+            <table>
+              <tr>
+                  <td><img class="img-fluid" src= {{sortie_detail.photo1.url}} /></td>
+                  <td><img class="img-fluid" src= {{sortie_detail.photo2.url}} /></td>
+                  <td><img class="img-fluid" src= {{sortie_detail.photo3.url}} /></td>
+              </tr>
+            </table>
+
+            <h3> Commentaires </h3>
+            {% for commentaire in commentaires %}
+            
+              <div>
+              <p> par {{commentaire.utilisateur}} le {{commentaire.date}}  : <br>
+                 {{commentaire.texte}} 
+               </p>
+              </div>
+            
+            {% endfor %}
+
+              {% if user.is_authenticated%}
+                <form action="" method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  {{nouveau_commentaire.as_p}}
+                  <center>
+                    <input class="btn btn-success" type="submit" value="Envoyer">
+                    <a href="{% url 'details' itineraire_id=sortie_detail.itineraire.id sortie_id=sortie_detail.id %}" class="btn btn-danger"> Annuler </a>
+                  </center>
+                </form>
+              {% endif %} 
         {% endif %}
         <br />
         <br />

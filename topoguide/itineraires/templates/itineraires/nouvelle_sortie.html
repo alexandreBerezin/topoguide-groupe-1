@@ -1,5 +1,6 @@
 {% extends "itineraires/base.html" %}
 {% block content %}
+
     {% if new %}
         <div class="container mt-3">
             <h2>Ajouter une sortie :</h2>
@@ -12,7 +13,7 @@
                     La sortie a été correctement créée !
                 </p>
             {% else %}
-                <form action="" method="POST">
+                <form action="" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form.as_p }}
                     <center>

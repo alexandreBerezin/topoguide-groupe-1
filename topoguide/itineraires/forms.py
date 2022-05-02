@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Sortie
+from .models import Commentaire, Sortie
 
 # formulaire pour ajouter ou modifier une sortie, il prend en compte tous les champs d'une sortie du modèle
 # Sortie, sauf l'utilisateur (imposé puisque c'est l'utilisateur connecté) et l'itinéraire puisque la sortie
@@ -8,7 +8,7 @@ from .models import Sortie
 class SortieForm(ModelForm):
     class Meta:
         model = Sortie
-        fields = ('date_sortie','duree_reelle','nombre_participants','experience_groupe','meteo','difficulte_ressentie')
+        fields = ('date_sortie','duree_reelle','nombre_participants','experience_groupe','meteo','difficulte_ressentie','photo1')
         labels = {
             'date_sortie': 'Date de la sortie',
             'duree_reelle': 'Durée de la sortie',
@@ -25,4 +25,13 @@ class SortieForm(ModelForm):
             'meteo': forms.Select(attrs={'class':'form-control'}),
             'difficulte_ressentie': forms.NumberInput(attrs={'class':'form-control'}),
         }
+
+class CommentaireForm(ModelForm):
+    class Meta:
+        model = Commentaire
+        fields = ('texte','statut')
+        labels = {
+            'texte': 'Commentaires',
+        }
+
 

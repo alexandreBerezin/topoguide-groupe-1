@@ -18,6 +18,7 @@ class Itineraire(models.Model):
     denivele_pos = models.IntegerField()
     duree_estimee = models.IntegerField()
     difficulte_estimee = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
+    
     def __str__(self):
         """ Permet de renvoyer avec la fonction string, le titre correctement pour visualiser """
         return self.titre
@@ -49,10 +50,35 @@ class Sortie(models.Model):
         choices=METEO_CHOIX,
         default='MO',
     )
+    
     difficulte_ressentie = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
+    
+    '''Paramètres pour EXtension 1'''
+    photo1 = models.ImageField(upload_to='photo/',default='photo/default.png')
+    photo2 = models.ImageField(upload_to='photo/',default='photo/default.png')
+    photo3 = models.ImageField(upload_to='photo/',default='photo/default.png')
+     
     def __str__(self):
         """ Permet de renvoyer avec la fonction string, le nom d'utilisateur correctement pour visualiser """
         return self.utilisateur.username
+
+class Commentaire(models.Model):
+    utilisateur = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    sortie = models.ForeignKey(Sortie, on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now_add=True)
+    texte = models.CharField(max_length=2000)
+    
+    cache = models.BooleanField(default=False)
+    
+    VISIBILITE = [
+    ('PB', 'Public'),
+    ('PR', 'Privé'),]
+    
+    statut = models.CharField(
+        max_length=2,
+        choices=VISIBILITE,
+        default='PB',
+    )
     
 
 class Map(models.Model):
@@ -68,4 +94,5 @@ class Map(models.Model):
     longitude_arrivee = models.FloatField()
     zone_geo_latitude = models.FloatField()
     zone_geo_longitude = models.FloatField()
+
     
