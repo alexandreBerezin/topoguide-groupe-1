@@ -80,15 +80,18 @@ def details(request, sortie_id, itineraire_id):
     try:
         sortie_detail = Sortie.objects.get(pk=sortie_id)
         #On récupère les commentaires non cachées et publics
-        
-        commentaires = Commentaire.objects.filter(sortie = sortie_detail).filter(cache = False)
+        if request.user.is_authenticated :
+            commentaires = Commentaire.objects.filter(sortie = sortie_detail).filter(cache = False)
+            print("logged",commentaires)
+        else:
+            commentaires = Commentaire.objects.filter(sortie = sortie_detail).filter(cache = False).filter(statut ="PB")
+            print("non logged",commentaires)
         nouveau_commentaire = CommentaireForm(request.POST or None, request.FILES or None)
         if request.method == 'POST':
             if nouveau_commentaire.is_valid() :
                 nouveau_commentaire = nouveau_commentaire.save(commit=False)
                 nouveau_commentaire.utilisateur = request.user
                 nouveau_commentaire.sortie = Sortie.objects.get(pk=sortie_id)
-                nouveau_commentaire.statut= 1
                 nouveau_commentaire.save()
             else:
                 print("FORM NON VALIDE")            
