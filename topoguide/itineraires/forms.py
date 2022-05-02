@@ -29,9 +29,9 @@ class SortieForm(ModelForm):
 class CommentaireForm(ModelForm):
     class Meta:
         model = Commentaire
-        fields = ('texte',)
+        fields = ('texte','statut')
         labels = {
-            'texte': 'Commentaires : ',
+            'texte': 'Commentaires',
         }
 
 
