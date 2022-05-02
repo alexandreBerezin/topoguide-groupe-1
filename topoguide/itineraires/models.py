@@ -18,17 +18,10 @@ class Itineraire(models.Model):
     denivele_pos = models.IntegerField()
     duree_estimee = models.IntegerField()
     difficulte_estimee = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
+    
     def __str__(self):
         """ Permet de renvoyer avec la fonction string, le titre correctement pour visualiser """
         return self.titre
-
-class Commentaire(models.Model):
-    utilisateur = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    sortie = models.ForeignKey(Sortie, on_delete=models.CASCADE)
-    date_sortie = models.DateField()
-    texte = models.CharField(max_length=2000)
-    statut = models.IntegerField()
-
 
 class Sortie(models.Model):
     """ Modèle qui permet de générer les différents champs d'informations pour une sortie
@@ -62,9 +55,19 @@ class Sortie(models.Model):
     '''Paramètres pour EXtension 1'''
     photo1 = models.ImageField(upload_to='photo/',default='default.jpg')
      
-    
-    
     def __str__(self):
         """ Permet de renvoyer avec la fonction string, le nom d'utilisateur correctement pour visualiser """
         return self.utilisateur.username
+    
+    
+class Commentaire(models.Model):
+    utilisateur = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    sortie = models.ForeignKey(Sortie, on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now_add=True)
+    texte = models.CharField(max_length=2000)
+    
+    # 1 = public
+    # 2 = privé 
+    
+    statut = models.IntegerField()
     

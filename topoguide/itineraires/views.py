@@ -1,9 +1,10 @@
+import datetime
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
 
-from .forms import SortieForm
-from .models import Itineraire, Sortie
+from .forms import CommentaireForm, SortieForm
+from .models import Commentaire, Itineraire, Sortie
 
 # Create your views here.
 
@@ -78,9 +79,20 @@ def details(request, sortie_id, itineraire_id):
     """
     try:
         sortie_detail = Sortie.objects.get(pk=sortie_id)
+        commentaires = Commentaire.objects.filter(sortie = sortie_detail)
+        nouveau_commentaire = CommentaireForm(request.POST or None, request.FILES or None)
+        if request.method == 'POST':
+            if nouveau_commentaire.is_valid() :
+                nouveau_commentaire = nouveau_commentaire.save(commit=False)
+                nouveau_commentaire.utilisateur = request.user
+                nouveau_commentaire.sortie = Sortie.objects.get(pk=sortie_id)
+                nouveau_commentaire.statut= 1
+                nouveau_commentaire.save()
+            else:
+                print("FORM NON VALIDE")            
     except Sortie.DoesNotExist:
         raise Http404("La sortie n'existe pas")
-    return render(request, 'itineraires/details.html', {'sortie_detail' : sortie_detail, 'itineraire_id' : itineraire_id})
+    return render(request, 'itineraires/details.html', {'sortie_detail' : sortie_detail, 'itineraire_id' : itineraire_id, 'commentaires' : commentaires,"nouveau_commentaire":nouveau_commentaire})
 
 # vue accessible seulement pour un utilisateur qui possède un compte et est authentifié 
 @login_required

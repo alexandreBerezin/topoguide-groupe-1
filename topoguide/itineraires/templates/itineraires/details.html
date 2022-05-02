@@ -35,6 +35,29 @@
             </tbody>
             </table> 
             <img class="img-fluid" src= {{sortie_detail.photo1.url}} />
+
+
+            <h3> Commentaires </h3>
+            {% for commentaire in commentaires %}
+            
+            <p> {{commentaire.utilisateur}} : {{commentaire.texte}}
+            
+            {% endfor %}
+
+            {% if user.is_authenticated%}
+
+            <form action="" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              {{nouveau_commentaire.as_p}}
+            <center>
+              <input class="btn btn-success" type="submit" value="Envoyer">
+              <a href="{% url 'details' itineraire_id=sortie_detail.itineraire.id sortie_id=sortie_detail.id %}" class="btn btn-danger"> Annuler </a>
+            </center>
+          </form>
+
+            
+            {% endif %} 
+
             {% endif %} 
             <br/> <br/>
       </div>
