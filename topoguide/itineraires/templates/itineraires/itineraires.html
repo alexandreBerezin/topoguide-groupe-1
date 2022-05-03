@@ -1,7 +1,28 @@
 {% extends "itineraires/base.html" %}
 {% block content %}
 
+<form method="GET" action="./">
+  <div class="form-row">
+  
+    <div class="form-group col-md-2 col-lg-2">
+      <label for="difficulte_estimee">Difficultée estimée  : </label>
+      <input type="number" class="form-control"  name="difficulte_estimee" value="{{difficulte_estimee}}">
       
+      
+      
+    </div>
+    <div class="form-group col-md-2 col-lg-2">
+      <label for="duree_min">Durée minimale : </label>
+      <input type="number" class="form-control"  name="duree_min" value="{{duree_min}}">
+  </div>
+  <div class="form-group col-md-2 col-lg-2">
+      <label for="duree_max">Durée maximale : </label>
+      <input type="number" class="form-control"  name="duree_max" value="{{duree_max}}">
+  </div>
+</div>
+  
+<button type="submit" class="btn btn-primary">Filtrer</button>
+</form>  
         <div class="container mt-3">
             <h2> Itinéraires : </h2>
             <p></p>

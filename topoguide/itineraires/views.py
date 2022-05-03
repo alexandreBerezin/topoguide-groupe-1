@@ -1,7 +1,7 @@
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
-
+from django.db.models import Q
 from .forms import SortieForm
 from .models import Itineraire, Sortie
 
@@ -21,18 +21,39 @@ def itineraires(request):
         render(): réponse Http associant la fonction, le template associé (itineraire.html) et le contexte
         
     """
+    difficulte_estimee=request.GET.get('difficulte_estimee')
+    duree_max=request.GET.get('duree_max')
+    duree_min=request.GET.get('duree_min')
     if request.method == 'GET': # If the form is submitted
         search = request.GET.get('search', None)
         itineraire_list = Itineraire.objects.order_by('titre')[:]
+        if difficulte_estimee!=None and difficulte_estimee!='':
+            itineraire_list=itineraire_list.filter(difficulte_estimee=difficulte_estimee)
+        if duree_max!=None and duree_max!='': 
+            itineraire_list=itineraire_list.filter(duree_estimee__lt=duree_max)
+        if duree_min!=None and duree_max!='' : 
+            itineraire_list=itineraire_list.filter(duree_estimee__gt=duree_min)
         context = {
             'itineraire_list': itineraire_list,
-            'search' : search,
+            'search' : search,'difficulte_estimee': difficulte_estimee,'duree_max':duree_max,'duree_min':duree_min
         }
+        
     else:
         itineraire_list = Itineraire.objects.order_by('titre')[:]
+        if difficulte_estimee!=None and difficulte_estimee!='':
+            itineraire_list=itineraire_list.filter(difficulte_estimee=difficulte_estimee)
+        if duree_max!=None and duree_max!='': 
+            itineraire_list=itineraire_list.filter(duree_estimee__lt=duree_max)
+        if duree_min!=None and duree_max!='' : 
+            itineraire_list=itineraire_list.filter(duree_estimee__gt=duree_min)
         context = {
             'itineraire_list': itineraire_list,
+            'difficulte_estimee': difficulte_estimee,'duree_max':duree_max,'duree_min':duree_min
         }
+        
+    
+    
+    
     return render(request, 'itineraires/itineraires.html', context)
 
 
@@ -56,7 +77,11 @@ def sorties(request, itineraire_id):
         sorties_list = Sortie.objects.filter(itineraire=itineraire).all()
     except Itineraire.DoesNotExist:
         raise Http404("L'itinéraire n'existe pas")
-    return render(request, 'itineraires/sorties.html', {'itineraire': itineraire, 'sorties_list': sorties_list})
+    date_sortie=request.GET.get('date_sortie')
+    if date_sortie!=None and date_sortie!='' : 
+        sorties_list=sorties_list.filter(date_sortie=date_sortie)
+
+    return render(request, 'itineraires/sorties.html', {'itineraire': itineraire, 'sorties_list': sorties_list,'date_sortie':date_sortie})
 
 # Vue accessible pour les utilisateurs connectés ou non avec des options d'ajout et de modification 
 # seulement pour les utilisateurs connectés
@@ -145,21 +170,23 @@ def modif_sortie(request, itineraire_id, sortie_id):
 
 def recherche(request):
     
-    if request.method == 'GET': # If the form is submitted
-        search = request.GET.get('search', None)
-        itineraire_list = Itineraire.objects.order_by('titre')[:]
-        sorties_list = Sortie.objects.order_by('id')[:]
-        context = {
-            'itineraire_list': itineraire_list,
-            'sorties_list' : sorties_list,
-            'search' : search,
-        }
-    else:
-        itineraire_list = Itineraire.objects.order_by('titre')[:]
-        sorties_list = Sortie.objects.order_by('id')[:]
-        context = {
-            'itineraire_list': itineraire_list,
-            'sorties_list' : sorties_list
-        }
-    return render(request, 'itineraires/page_recherche.html', context)
+    itineraire_list = Itineraire.objects.all()
+    sortie_list = Sortie.objects.all()
+    search = request.GET.get('search')
+    
+   
+    if search!=None and search!='':
+        itineraire_list = itineraire_list.filter(Q(titre__icontains = search)  | 
+                                                   Q(description__icontains = search) | 
+                                                   Q(point_depart__icontains = search)) 
+        sortie_list = sortie_list.filter(Q(utilisateur__username__icontains = search) |
+                                           Q(itineraire__titre__icontains = search))
+    
+      
+    return render(request,'itineraires/page_recherche.html',{'itineraire_list' : itineraire_list,'sortie_list' : sortie_list,'search' : search})
+    
+    
+    
+    
+    
     

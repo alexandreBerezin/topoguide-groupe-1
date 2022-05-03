@@ -1,6 +1,7 @@
 {% extends "itineraires/base.html" %}
 {% block content %}
     <div class="container mt-3">
+      
         <h2> {{ itineraire.titre }} </h2>
             <p> {{ itineraire.description }} </p>
             <table class="table">
@@ -37,7 +38,14 @@
               </table>
               <br> </br>
               <h2> Sorties </h2>
-              
+              <form method="GET" action="./">
+              <div class="form-group col-md-2 col-lg-2">
+                <label for="DateSortie">Date de sortie</label>
+                <input type="date" class="form-control"  name="date_sortie" value="{{date_sortie}}">
+                
+              </div>
+              <button type="submit" class="btn btn-primary">Filtrer</button>
+            </form>
         {% if sorties_list%}
         
         <table class="table table-hover">
