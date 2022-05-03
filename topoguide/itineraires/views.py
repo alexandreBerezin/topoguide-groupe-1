@@ -100,7 +100,7 @@ def nouvelle_sortie(request, itineraire_id):
     submitted = False
     if request.method == 'POST':
         form = SortieForm(request.POST)
-        if form.is_valid :
+        if form.is_valid() :
             form = form.save(commit=False)
             form.utilisateur = request.user
             form.itineraire = Itineraire.objects.get(pk=itineraire_id)
@@ -139,4 +139,27 @@ def modif_sortie(request, itineraire_id, sortie_id):
             submitted=True
     else : 
         form = SortieForm(request.POST or None, instance=sortie)
+    
     return render(request, 'itineraires/nouvelle_sortie.html', {'form' : form, 'itineraire_id' : itineraire_id, 'sortie_id' : sortie_id, 'submitted' : submitted})
+
+
+def recherche(request):
+    
+    if request.method == 'GET': # If the form is submitted
+        search = request.GET.get('search', None)
+        itineraire_list = Itineraire.objects.order_by('titre')[:]
+        sorties_list = Sortie.objects.order_by('id')[:]
+        context = {
+            'itineraire_list': itineraire_list,
+            'sorties_list' : sorties_list,
+            'search' : search,
+        }
+    else:
+        itineraire_list = Itineraire.objects.order_by('titre')[:]
+        sorties_list = Sortie.objects.order_by('id')[:]
+        context = {
+            'itineraire_list': itineraire_list,
+            'sorties_list' : sorties_list
+        }
+    return render(request, 'itineraires/page_recherche.html', context)
+    
