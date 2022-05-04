@@ -18,7 +18,7 @@ class SortieForm(ModelForm):
             'difficulte_ressentie': 'Difficulté ressentie',
         }
         widgets = {
-            'date_sortie': forms.DateInput(attrs={'class':'form-control'}),
+            'date_sortie': forms.DateInput(attrs={'type' : 'date','class':'form-control'}),
             'duree_reelle': forms.NumberInput(attrs={'class':'form-control'}),
             'nombre_participants': forms.NumberInput(attrs={'class':'form-control'}),
             'experience_groupe': forms.Select(attrs={'class':'form-control'}),
