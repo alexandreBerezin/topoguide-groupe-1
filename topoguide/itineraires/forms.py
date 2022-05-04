@@ -16,6 +16,9 @@ class SortieForm(ModelForm):
             'experience_groupe': 'Experience du groupe',
             'meteo': 'Méteo lors de la sortie',
             'difficulte_ressentie': 'Difficulté ressentie',
+            'photo1' : 'Photo n°1',
+            'photo2' : 'Photo n°2',
+            'photo3' : 'Photo n°3',
         }
         widgets = {
             'date_sortie': forms.DateInput(attrs={'type' : 'date','class':'form-control'}),
