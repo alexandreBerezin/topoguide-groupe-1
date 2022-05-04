@@ -54,12 +54,17 @@
               <br> </br>
               <h2> Sorties </h2>
               <form method="GET" action="./">
+                <div class="form-row">
               <div class="form-group col-md-2 col-lg-2">
-                <label for="DateSortie">Date de sortie</label>
+                <label for="DateSortie">Date de sortie : </label>
                 <input type="date" class="form-control"  name="date_sortie" value="{{date_sortie}}">
                 
               </div>
-              <button type="submit" class="btn btn-primary">Filtrer</button>
+              <div class="form-group col-md-2 col-lg-2">
+                <label style="visibility:hidden"> .. </label>
+              <button type="submit" class="form-control btn btn-primary">Filtrer</button>
+              </div>
+            </div>
             </form>
         {% if sorties_list%}
         
