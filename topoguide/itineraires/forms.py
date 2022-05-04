@@ -29,9 +29,13 @@ class SortieForm(ModelForm):
 class CommentaireForm(ModelForm):
     class Meta:
         model = Commentaire
-        fields = ('texte','statut')
+        fields = ('statut','texte')
         labels = {
-            'texte': 'Commentaires',
+            'statut': 'Commentaires',
+            'texte' : '',
+        }
+        widgets = {
+            'texte': forms.Textarea,
         }
 
 
