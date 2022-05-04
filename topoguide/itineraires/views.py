@@ -2,12 +2,17 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from .forms import SortieForm
-from .models import Itineraire, Sortie
+from .forms import CommentaireForm, SortieForm
+from .models import Itineraire, Sortie, Map, Commentaire
+import folium
+
 
 # Create your views here.
 
 # Vue accessible pour les utilisateurs connectés ou non de la même manière
+def accueil(request):
+    return render(request, 'itineraires/accueil.html')
+
 def itineraires(request):
     """ Une fonction qui permet avec une requête de l'utilisateur d'obtenir la liste 
     des itinéraires disponibles avec leurs différents champs dans la base de données
@@ -60,7 +65,8 @@ def itineraires(request):
 # Vue accessible pour les utilisateurs connectés ou non de la même manière
 def sorties(request, itineraire_id):
     """ Une fonction qui permet à partir de la requête utilisateur d'obtenir les sorties associées à un
-    itinéraire. 
+    itinéraire. Elle permet également la création d'une carte, si les coordonnées du point de départ et 
+    du point d'arrivée pour l'itinéraire sont dans la base de données, sinon cela ne change rien.
 
     Args:
         request : requête de l'utilisateur GET
@@ -75,13 +81,25 @@ def sorties(request, itineraire_id):
     try:
         itineraire= Itineraire.objects.get(pk=itineraire_id)
         sorties_list = Sortie.objects.filter(itineraire=itineraire).all()
+        date_sortie=request.GET.get('date_sortie')
+        if date_sortie!=None and date_sortie!='' : 
+            sorties_list=sorties_list.filter(date_sortie=date_sortie)
+        try :
+            map_infos = Map.objects.get(itineraire=itineraire)
+            map = folium.Map([map_infos.zone_geo_latitude, map_infos.zone_geo_longitude], width='100%', height='85%',position='relative', min_zoom=0, max_zoom=50, zoom_start=13)
+            folium.Marker(location=[map_infos.latitude_depart, map_infos.longitude_depart],tooltip='Départ : ' + map_infos.depart).add_to(map)
+            folium.Marker(location=[map_infos.latitude_arrivee, map_infos.longitude_arrivee],tooltip='Arrivée : ' + map_infos.arrivee).add_to(map)
+            map=map._repr_html_() #updated
+            context = {'itineraire': itineraire, 'sorties_list': sorties_list, 'map': map,'date_sortie':date_sortie}
+        except Map.DoesNotExist : 
+            context = {'itineraire': itineraire, 'sorties_list': sorties_list,'date_sortie':date_sortie}
     except Itineraire.DoesNotExist:
         raise Http404("L'itinéraire n'existe pas")
-    date_sortie=request.GET.get('date_sortie')
-    if date_sortie!=None and date_sortie!='' : 
-        sorties_list=sorties_list.filter(date_sortie=date_sortie)
+    
+    return render(request, 'itineraires/sorties.html', context)
 
-    return render(request, 'itineraires/sorties.html', {'itineraire': itineraire, 'sorties_list': sorties_list,'date_sortie':date_sortie})
+    
+
 
 # Vue accessible pour les utilisateurs connectés ou non avec des options d'ajout et de modification 
 # seulement pour les utilisateurs connectés
@@ -103,9 +121,25 @@ def details(request, sortie_id, itineraire_id):
     """
     try:
         sortie_detail = Sortie.objects.get(pk=sortie_id)
+        #On récupère les commentaires non cachées et publics
+        if request.user.is_authenticated :
+            commentaires = Commentaire.objects.filter(sortie = sortie_detail).filter(cache = False)
+            print("logged",commentaires)
+        else:
+            commentaires = Commentaire.objects.filter(sortie = sortie_detail).filter(cache = False).filter(statut ="PB")
+            print("non logged",commentaires)
+        nouveau_commentaire = CommentaireForm(request.POST or None, request.FILES or None)
+        if request.method == 'POST':
+            if nouveau_commentaire.is_valid() :
+                nouveau_commentaire = nouveau_commentaire.save(commit=False)
+                nouveau_commentaire.utilisateur = request.user
+                nouveau_commentaire.sortie = Sortie.objects.get(pk=sortie_id)
+                nouveau_commentaire.save()
+            else:
+                print("FORM NON VALIDE")            
     except Sortie.DoesNotExist:
         raise Http404("La sortie n'existe pas")
-    return render(request, 'itineraires/details.html', {'sortie_detail' : sortie_detail, 'itineraire_id' : itineraire_id})
+    return render(request, 'itineraires/details.html', {'sortie_detail' : sortie_detail, 'itineraire_id' : itineraire_id, 'commentaires' : commentaires,"nouveau_commentaire":nouveau_commentaire})
 
 # vue accessible seulement pour un utilisateur qui possède un compte et est authentifié 
 @login_required
@@ -121,7 +155,7 @@ def nouvelle_sortie(request, itineraire_id):
     Returns:
         render(): réponse Http associant la fonction, le template associé (nouvelle_sortie.html) et le contexte
     """
-    
+    new = True
     submitted = False
     if request.method == 'POST':
         form = SortieForm(request.POST)
@@ -131,11 +165,14 @@ def nouvelle_sortie(request, itineraire_id):
             form.itineraire = Itineraire.objects.get(pk=itineraire_id)
             form.save()
             submitted = True
+            sortie_id = form.id
+            context = {'new': new,'form' : form, 'itineraire_id' : itineraire_id, 'sortie_id' : sortie_id, 'submitted' : submitted}
     else : 
         form = SortieForm
         if submitted in request.GET:
             submitted = True
-    return render(request, 'itineraires/nouvelle_sortie.html', {'form' : form, 'itineraire_id' : itineraire_id, 'submitted' : submitted})
+        context = {'new':new,'form' : form, 'itineraire_id' : itineraire_id,'submitted' : submitted}
+    return render(request, 'itineraires/nouvelle_sortie.html', context)
 
 # vue accessible seulement pour un utilisateur qui possède un compte et est authentifié 
 @login_required
@@ -152,29 +189,29 @@ def modif_sortie(request, itineraire_id, sortie_id):
     Returns:
         render(): réponse Http associant la fonction, le template associé (nouvelle_sortie.html) et le contexte
     """
+    new = False
     submitted = False
     sortie = get_object_or_404(Sortie, id=sortie_id)
     if request.method == 'POST':
-        form = SortieForm(request.POST or None, instance=sortie)
-        if form.is_valid :
+        form = SortieForm(request.POST or None, request.FILES or None, instance=sortie)
+        if form.is_valid() :
             form = form.save(commit=False)
             form.utilisateur = request.user
             form.itineraire = Itineraire.objects.get(pk=itineraire_id)
             form.save()
             submitted=True
+        else:
+            print("FORM NON VALIDE")
     else : 
         form = SortieForm(request.POST or None, instance=sortie)
+    context = {'new':new,'form' : form, 'itineraire_id' : itineraire_id, 'sortie_id' : sortie_id, 'submitted' : submitted}
+    return render(request, 'itineraires/nouvelle_sortie.html', context)
     
-    return render(request, 'itineraires/nouvelle_sortie.html', {'form' : form, 'itineraire_id' : itineraire_id, 'sortie_id' : sortie_id, 'submitted' : submitted})
-
-
 def recherche(request):
     
     itineraire_list = Itineraire.objects.all()
     sortie_list = Sortie.objects.all()
     search = request.GET.get('search')
-    
-   
     if search!=None and search!='':
         itineraire_list = itineraire_list.filter(Q(titre__icontains = search)  | 
                                                    Q(description__icontains = search) | 
@@ -184,9 +221,3 @@ def recherche(request):
     
       
     return render(request,'itineraires/page_recherche.html',{'itineraire_list' : itineraire_list,'sortie_list' : sortie_list,'search' : search})
-    
-    
-    
-    
-    
-    

@@ -1,14 +1,20 @@
 <!doctype html>
 <html lang="en">
-  
+    <title> Topoguide </title>
+    <meta name="description" content="Retrouvez les itinéraires de randonnées."/>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="keywords" content="Itinéraire, Randonnées, Sorties"/>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" ></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" 
+          rel="stylesheet" 
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" 
+          crossorigin="anonymous"/>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <header>
@@ -25,9 +31,14 @@
           <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" href="{%url 'itineraires'%}">Itinéraires</a>
+                  <a class="nav-link" href="{% url 'accueil' %}">Accueil</a>
               </li>
-            </ul>
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'itineraires' %}">Randonnées</a>
+              </li>
+              {% block nav-itineraires %}{% endblock nav-itineraires %}
+              {% block nav-ajoutsortie %}{% endblock nav-ajoutsortie %}
+          </ul>
             <form action="{% url 'recherche' %}" method="get">
               <div class="input-group">
                   <input type="search" class="form-control rounded" placeholder="Rechercher un itinéraire par..." aria-label="Search" aria-describedby="search-addon" name="search" value="{{demande}}"/>
@@ -42,25 +53,21 @@
           {% endif %}
         </div>
       </nav>
-      <!-- Navbar -->
+        <!-- Navbar -->
+        <!-- Jumbotron -->
+        <div class=" container-full-bg p-5 text-center shadow-1-strong rounded mb-5 text-black "
+             style="background-image: url({% static 'itineraires/images/background.png' %});height: 350px;">
+            <h1 class="mb-3">TOPOGUIDE</h1>
+            <h4 class="mb-3">JOURNAL DE RANDONNÉES</h4>
 
-      <!-- Jumbotron -->
-      <div class=" container-full-bg p-5 text-center shadow-1-strong rounded mb-5 text-black "
-      style="background-image: url({% static 'itineraires/images/background.png'%});height: 350px;">
-        <h1 class="mb-3">TOPOGUIDE</h1>
-        <h4 class="mb-3">JOURNAL DE RANDONNÉES</h4>
-      </div>
-
+        </div>
     </header>
-
     <!-- Corps de la page - avec block content en fonction du template -->
     <body>
-      <div class="content container">
-          <div class="row">
-              {% block content %}
-              {% endblock %}
-          </div>
-      </div>
-  </body>
-
+        <div class="content container">
+            <div class="row">
+                {% block content %}{% endblock content %}
+            </div>
+        </div>
+    </body>
 </html>

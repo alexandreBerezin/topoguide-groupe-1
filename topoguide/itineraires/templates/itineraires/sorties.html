@@ -1,6 +1,13 @@
 {% extends "itineraires/base.html" %}
+{% block nav-ajoutsortie %}
+    <li class="nav-item">
+        <a class="nav-link"
+           href="{% url 'nouvelle_sortie' itineraire_id=itineraire.id %}">Ajouter une sortie</a>
+    </li>
+{% endblock nav-ajoutsortie %}
 {% block content %}
     <div class="container mt-3">
+
       
         <h2> {{ itineraire.titre }} </h2>
             <p> {{ itineraire.description }} </p>
@@ -36,6 +43,12 @@
                   </tr>
                 </tbody>
               </table>
+            </div>
+            <div class="col">
+                <!-- Carte avec le point de départ de l'itinéraire et son point d'arrivée -->
+                {{ map|safe }}
+            </div>
+        </div>
               <br> </br>
               <h2> Sorties </h2>
               <form method="GET" action="./">
@@ -62,29 +75,54 @@
         </thead> 
         <tbody>  
             {% for sortie in sorties_list %}
-                    <tr>
-                        <th scope="row"> </th>
-                        <td>{{ sortie.utilisateur.username }}</td>
-                        <td>{{ sortie.date_sortie }} </td>
-                        <td> <center> {{ sortie.difficulte_ressentie }} / 5  </center> </td>
-                        <td><a href="{%url 'details' itineraire_id=itineraire.id sortie_id=sortie.id%}" class="btn btn-outline-primary"> Consulter </a> </td> 
-                        <!--seulement pour utilisateur connecté -->
-                        {% if user.is_authenticated%}
-                          {% if user.username == sortie.utilisateur.username%}
-                              <td> <a href="{%url 'modif_sortie' itineraire_id=itineraire.id sortie_id=sortie.id %}" class="btn btn-outline-danger"> Modifier </a></td>
-                          {% endif %} 
-                        {% else %}
-                            <td>  </td> 
-                        {% endif %}
-                    </tr>
-            {% endfor %}
-        </tbody>
-        </table> 
-        {% endif %} 
-        {% if user.is_authenticated%}
-        <a href="{%url 'nouvelle_sortie' itineraire_id=itineraire.id %}" class="btn btn-warning"> Ajouter une sortie </a>
-        {% endif %} 
 
-        <br/> <br/>
-  </div>
-  {% endblock %}
+                    <tr>
+                        <th scope="row"></th>
+                        <th scope="col">Par</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">
+                            <center> Difficulté ressentie </center>
+                        </th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sortie in sorties_list %}
+                        <tr>
+                            <th scope="row"></th>
+                            <td>{{ sortie.utilisateur.username }}</td>
+                            <td>{{ sortie.date_sortie }}</td>
+                            <td>
+                                <center> {{ sortie.difficulte_ressentie }} / 5  </center>
+                            </td>
+                            <td>
+                                <a href="{% url 'details' itineraire_id=itineraire.id sortie_id=sortie.id %}"
+                                   class="btn btn-outline-primary"> Consulter </a>
+                            </td>
+                            <!--seulement pour utilisateur connecté -->
+                            {% if user.is_authenticated %}
+                                {% if user.username == sortie.utilisateur.username %}
+                                    <td>
+                                        <a href="{% url 'modif_sortie' itineraire_id=itineraire.id sortie_id=sortie.id %}"
+                                           class="btn btn-outline-danger"> Modifier </a>
+                                    </td>
+                                {% endif %}
+                            {% else %}
+                                <td>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+        {% if user.is_authenticated %}
+            <a href="{% url 'nouvelle_sortie' itineraire_id=itineraire.id %}"
+               class="btn btn-warning"> Ajouter une sortie </a>
+        {% endif %}
+        <br />
+        <br />
+    </div>
+{% endblock content %}

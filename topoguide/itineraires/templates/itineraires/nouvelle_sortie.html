@@ -1,24 +1,49 @@
 {% extends "itineraires/base.html" %}
 {% block content %}
-<div class="container mt-3">
-    <h2> Editer une sortie : </h2>
-    <br/> <br/>
-    {% if submitted  %}
-        <meta http-equiv = "refresh" content = "3; url ={%url 'sorties' itineraire_id=itineraire_id %}" />
-        <p> La sortie a été correctement enregistrée ! </p>
-    {% else %}
-        <form action="" method="POST">
-            {% csrf_token %}
 
-            {{ form.as_p}}
-            <center>
-            <input class="btn btn-success" type="submit" value="Enregistrer">
-            <a href="{% url 'itineraires' %}" class="btn btn-danger"> Annuler </a>
-            </center>
-        </form>
-    {% endif %}
-    <br/> <br/>
-   
-</div>
-
-{% endblock %}
+    {% if new %}
+        <div class="container mt-3">
+            <h2>Ajouter une sortie :</h2>
+            <br />
+            <br />
+            {% if submitted %}
+                <meta http-equiv="refresh"
+                      content="0; url={% url 'details' itineraire_id=itineraire_id sortie_id=sortie_id %}"/>
+                <p>
+                </p>
+            {% else %}
+                <form action="" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <center>
+                        <input class="btn btn-success" type="submit" value="Enregistrer"/>
+                        <a href="{% url 'sorties' itineraire_id=itineraire_id %}"
+                           class="btn btn-danger">Annuler</a>
+                    </center>
+                </form>
+            {% endif %}
+        {% else %}
+            <h2>Editer une sortie :</h2>
+            <br />
+            <br />
+            {% if submitted %}
+            <meta http-equiv="refresh" content="0; url={% url 'details' itineraire_id=itineraire_id sortie_id=sortie_id %}"/>
+                <p>
+                    La sortie a été correctement modifiée !
+                </p>
+            {% else %}
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <center>
+                        <input class="btn btn-success" type="submit" value="Enregistrer"/>
+                        <a href="{% url 'details' itineraire_id=itineraire_id sortie_id=sortie_id%}"
+                           class="btn btn-danger">Annuler</a>
+                    </center>
+                </form>
+            {% endif %}
+        {% endif %}
+        <br />
+        <br />
+    </div>
+{% endblock content %}
