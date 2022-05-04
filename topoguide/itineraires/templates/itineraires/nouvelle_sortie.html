@@ -27,10 +27,7 @@
             <br />
             <br />
             {% if submitted %}
-            <meta http-equiv="refresh" content="0; url={% url 'details' itineraire_id=itineraire_id sortie_id=sortie_id %}"/>
-                <p>
-                    La sortie a été correctement modifiée !
-                </p>
+                <meta http-equiv="refresh" content="0; url={% url 'details' itineraire_id=itineraire_id sortie_id=sortie_id %}"/>   
             {% else %}
                 <form action="" method="POST">
                     {% csrf_token %}

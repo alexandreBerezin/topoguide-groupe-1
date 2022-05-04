@@ -6,7 +6,6 @@ from .forms import CommentaireForm, SortieForm
 from .models import Itineraire, Sortie, Map, Commentaire
 import folium
 
-
 # Create your views here.
 
 # Vue accessible pour les utilisateurs connectés ou non de la même manière
@@ -42,7 +41,6 @@ def itineraires(request):
             'itineraire_list': itineraire_list,
             'search' : search,'difficulte_estimee': difficulte_estimee,'duree_max':duree_max,'duree_min':duree_min
         }
-        
     else:
         itineraire_list = Itineraire.objects.order_by('titre')[:]
         if difficulte_estimee!=None and difficulte_estimee!='':
@@ -55,10 +53,6 @@ def itineraires(request):
             'itineraire_list': itineraire_list,
             'difficulte_estimee': difficulte_estimee,'duree_max':duree_max,'duree_min':duree_min
         }
-        
-    
-    
-    
     return render(request, 'itineraires/itineraires.html', context)
 
 
@@ -95,11 +89,7 @@ def sorties(request, itineraire_id):
             context = {'itineraire': itineraire, 'sorties_list': sorties_list,'date_sortie':date_sortie}
     except Itineraire.DoesNotExist:
         raise Http404("L'itinéraire n'existe pas")
-    
     return render(request, 'itineraires/sorties.html', context)
-
-    
-
 
 # Vue accessible pour les utilisateurs connectés ou non avec des options d'ajout et de modification 
 # seulement pour les utilisateurs connectés
@@ -135,6 +125,7 @@ def details(request, sortie_id, itineraire_id):
                 nouveau_commentaire.utilisateur = request.user
                 nouveau_commentaire.sortie = Sortie.objects.get(pk=sortie_id)
                 nouveau_commentaire.save()
+                nouveau_commentaire = CommentaireForm(None)   
             else:
                 print("FORM NON VALIDE")            
     except Sortie.DoesNotExist:
@@ -206,7 +197,6 @@ def modif_sortie(request, itineraire_id, sortie_id):
         form = SortieForm(request.POST or None, instance=sortie)
     context = {'new':new,'form' : form, 'itineraire_id' : itineraire_id, 'sortie_id' : sortie_id, 'submitted' : submitted}
     return render(request, 'itineraires/nouvelle_sortie.html', context)
-    
 def recherche(request):
     
     itineraire_list = Itineraire.objects.all()

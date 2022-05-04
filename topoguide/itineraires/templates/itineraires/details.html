@@ -47,12 +47,16 @@
 
             <h3> Commentaires </h3>
             {% for commentaire in commentaires %}
-            
-              <div>
-              <p> par {{commentaire.utilisateur}} le {{commentaire.date}}  : <br>
-                 {{commentaire.texte}} 
-               </p>
-              </div>
+            <table class="table table-borderless">
+              <tbody>
+                <tr>
+                  <th> par {{commentaire.utilisateur}} le {{commentaire.date}}  : </th>
+                </tr>
+                <tr>
+                  <td> {{commentaire.texte}}  </td>
+                </tr>
+              </tbody>
+            </table>
             
             {% endfor %}
 
