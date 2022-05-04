@@ -8,7 +8,7 @@ from .models import Commentaire, Sortie
 class SortieForm(ModelForm):
     class Meta:
         model = Sortie
-        fields = ('date_sortie','duree_reelle','nombre_participants','experience_groupe','meteo','difficulte_ressentie','photo1')
+        fields = ('date_sortie','duree_reelle','nombre_participants','experience_groupe','meteo','difficulte_ressentie','photo1','photo2','photo3')
         labels = {
             'date_sortie': 'Date de la sortie',
             'duree_reelle': 'Durée de la sortie',
