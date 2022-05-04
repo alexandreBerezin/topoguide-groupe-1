@@ -11,6 +11,8 @@
       
         <h2> {{ itineraire.titre }} </h2>
             <p> {{ itineraire.description }} </p>
+            <div class="row">
+            <div class="col">
             <table class="table">
                 <tbody>
                   <tr>
@@ -75,21 +77,6 @@
         </thead> 
         <tbody>  
             {% for sortie in sorties_list %}
-
-                    <tr>
-                        <th scope="row"></th>
-                        <th scope="col">Par</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">
-                            <center> Difficulté ressentie </center>
-                        </th>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for sortie in sorties_list %}
                         <tr>
                             <th scope="row"></th>
                             <td>{{ sortie.utilisateur.username }}</td>

@@ -29,7 +29,7 @@
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="collapsibleNavbar">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
                   <a class="nav-link" href="{% url 'accueil' %}">Accueil</a>
               </li>
@@ -39,19 +39,20 @@
               {% block nav-itineraires %}{% endblock nav-itineraires %}
               {% block nav-ajoutsortie %}{% endblock nav-ajoutsortie %}
           </ul>
-            <form action="{% url 'recherche' %}" method="get">
-              <div class="input-group">
-                  <input type="search" class="form-control rounded" placeholder="Rechercher un itinéraire par..." aria-label="Search" aria-describedby="search-addon" name="search" value="{{demande}}"/>
-                  <button type="submit" class="btn btn-light"> Rechercher</button>
-              </div>
-          </form>
-          </div>
-          {% if user.is_authenticated%}
-              <a href="{%url 'logout'%}" class="btn btn-danger"> Logout </a>
-          {% else %}
-              <a href="{%url 'login'%}" class="btn btn-success"> Login </a>
-          {% endif %}
         </div>
+          <form class="d-flex" action="{% url 'recherche' %}" method="get">
+            <div class="input-group">
+                <input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Search" aria-describedby="search-addon" name="search" value="{{demande}}"/>
+                <button type="submit" class="btn btn-light me-3"> Rechercher</button>
+            </div>
+        </form>
+
+          {% if user.is_authenticated%}
+              <button class="btn btn-danger me-1" href="{%url 'logout'%}"> Logout </button>
+          {% else %}
+              <button class="btn btn-success me-1" href="{%url 'login'%}"> Login </button>
+          {% endif %}
+    </div>
       </nav>
         <!-- Navbar -->
         <!-- Jumbotron -->

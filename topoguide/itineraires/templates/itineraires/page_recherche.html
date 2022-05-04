@@ -85,7 +85,7 @@
                             <!--seulement pour utilisateur connecté -->
                             {% if user.is_authenticated%}
                               {% if user.username == sortie.utilisateur.username%}
-                                  <td> <a href="{%url 'modif_sortie' itineraire_id=itineraire.id sortie_id=sortie.id %}" class="btn btn-outline-danger"> Modifier </a></td>
+                                  <td> <a href="{%url 'modif_sortie' itineraire_id=sortie.itineraire.id sortie_id=sortie.id %}" class="btn btn-outline-danger"> Modifier </a></td>
                               {% endif %} 
                             {% else %}
                                 <td>  </td> 
