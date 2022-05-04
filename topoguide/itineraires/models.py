@@ -30,8 +30,8 @@ class Sortie(models.Model):
     utilisateur = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     itineraire = models.ForeignKey(Itineraire, on_delete=models.CASCADE)
     date_sortie = models.DateField()
-    duree_reelle = models.IntegerField()
-    nombre_participants = models.IntegerField()
+    duree_reelle = models.IntegerField(validators=[MinValueValidator(0)])
+    nombre_participants = models.IntegerField(validators=[MinValueValidator(1)])
     EXPERIENCE_CHOIX = [
     ('TD', 'Tous débutants'),
     ('TE', 'Tous expérimentés'),

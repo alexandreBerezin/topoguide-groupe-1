@@ -10,6 +10,9 @@ import folium
 # Create your views here.
 
 # Vue accessible pour les utilisateurs connectés ou non de la même manière
+def accueil(request):
+    return render(request, 'itineraires/accueil.html')
+
 def itineraires(request):
     """ Une fonction qui permet avec une requête de l'utilisateur d'obtenir la liste 
     des itinéraires disponibles avec leurs différents champs dans la base de données
@@ -135,7 +138,7 @@ def nouvelle_sortie(request, itineraire_id):
             form.save()
             submitted = True
             sortie_id = form.id
-            context = {'new':new,'form' : form, 'itineraire_id' : itineraire_id, 'sortie_id' : sortie_id, 'submitted' : submitted}
+            context = {'new': new,'form' : form, 'itineraire_id' : itineraire_id, 'sortie_id' : sortie_id, 'submitted' : submitted}
     else : 
         form = SortieForm
         if submitted in request.GET:
