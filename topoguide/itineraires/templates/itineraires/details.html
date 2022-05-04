@@ -3,7 +3,13 @@
         <div class="container mt-3">
             <h2>
                 <a href="{% url 'sorties' itineraire_id=sortie_detail.itineraire.id %}">{{ sortie_detail.itineraire.titre }}</a> - Sortie de {{ sortie_detail.utilisateur.username }}
-        </h2>
+            </h2>
+              {% if user.is_authenticated %}
+                {% if user.username == sortie_detail.utilisateur.username %}
+                  <a href="{% url 'modif_sortie' itineraire_id=sortie_detail.itineraire.id sortie_id=sortie_detail.id %}" class="btn btn-outline-danger btn-lg float-end"> Modifier </a>
+                {% endif %}
+              {% endif %}
+        <br />   
         <br />
         <br />
         {% if sortie_detail %}
