@@ -48,9 +48,9 @@
         </form>
 
           {% if user.is_authenticated%}
-              <button class="btn btn-danger me-1" href="{%url 'logout'%}"> Logout </button>
+              <a href="{%url 'logout'%}" class="btn btn-danger"> Logout </a>
           {% else %}
-              <button class="btn btn-success me-1" href="{%url 'login'%}"> Login </button>
+              <a href="{%url 'login'%}" class="btn btn-success"> Login </a>
           {% endif %}
     </div>
       </nav>
