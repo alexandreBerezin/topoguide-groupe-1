@@ -81,18 +81,22 @@ def sorties(request, itineraire_id):
     try:
         itineraire= Itineraire.objects.get(pk=itineraire_id)
         sorties_list = Sortie.objects.filter(itineraire=itineraire).all()
-        date_sortie=request.GET.get('date_sortie')
-        if date_sortie!=None and date_sortie!='' : 
-            sorties_list=sorties_list.filter(date_sortie=date_sortie)
+        date_sortie_min=request.GET.get('date_sortie_min')
+        date_sortie_max=request.GET.get('date_sortie_max')
+        if date_sortie_min!=None and date_sortie_min!='' : 
+            sorties_list=sorties_list.filter(date_sortie__gte=date_sortie_min)
+        if date_sortie_max!=None and date_sortie_max!='' : 
+            sorties_list=sorties_list.filter(date_sortie__lte=date_sortie_max)
+        
         try :
             map_infos = Map.objects.get(itineraire=itineraire)
             map = folium.Map([map_infos.zone_geo_latitude, map_infos.zone_geo_longitude], width='100%', height='85%',position='relative', min_zoom=0, max_zoom=50, zoom_start=13)
             folium.Marker(location=[map_infos.latitude_depart, map_infos.longitude_depart],tooltip='Départ : ' + map_infos.depart).add_to(map)
             folium.Marker(location=[map_infos.latitude_arrivee, map_infos.longitude_arrivee],tooltip='Arrivée : ' + map_infos.arrivee).add_to(map)
             map=map._repr_html_() #updated
-            context = {'itineraire': itineraire, 'sorties_list': sorties_list, 'map': map,'date_sortie':date_sortie}
+            context = {'itineraire': itineraire, 'sorties_list': sorties_list, 'map': map,'date_sortie_min':date_sortie_min,'date_sortie_max':date_sortie_max}
         except Map.DoesNotExist : 
-            context = {'itineraire': itineraire, 'sorties_list': sorties_list,'date_sortie':date_sortie}
+            context = {'itineraire': itineraire, 'sorties_list': sorties_list,'date_sortie_min':date_sortie_min,'date_sortie_max':date_sortie_max}
     except Itineraire.DoesNotExist:
         raise Http404("L'itinéraire n'existe pas")
     return render(request, 'itineraires/sorties.html', context)
