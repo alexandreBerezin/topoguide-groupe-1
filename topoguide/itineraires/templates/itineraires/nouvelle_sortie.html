@@ -29,7 +29,7 @@
             {% if submitted %}
                 <meta http-equiv="refresh" content="0; url={% url 'details' itineraire_id=itineraire_id sortie_id=sortie_id %}"/>   
             {% else %}
-                <form action="" method="POST">
+                <form action="" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form.as_p }}
                     <center>
