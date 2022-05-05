@@ -11,7 +11,7 @@
       
      {%if search%}
       {% if itineraire_list or sortie_list %}
-      <h2> Résultat correspondant à votre recherche :  </h2>
+      <h2> Résultats correspondants à votre recherche :  </h2>
       {%if itineraire_list %}
       <h2> Itinéraires :  </h2>
       
@@ -51,7 +51,6 @@
                   </tr>
               
           {% endfor %}
-          {% comment %} sinon on affiche tous les itineraires {% endcomment %}
           
          
         </tbody>
@@ -67,6 +66,7 @@
                     <th scope="row"> </th>
                     <th scope="col"> Par </th>
                     <th scope="col"> Date </th>
+                    <th scope="col"> Itinéraire </th>
                     <th scope="col"> <center> Difficulté ressentie </center> </th>
                     <th scope="col">  </th>
                     <th scope="col">  </th>
@@ -80,6 +80,7 @@
                             <th scope="row"> </th>
                             <td>{{ sortie.utilisateur.username }}</td>
                             <td>{{ sortie.date_sortie }} </td>
+                            <td>{{ sortie.itineraire }} </td>
                             <td> <center> {{ sortie.difficulte_ressentie }} / 5  </center> </td>
                             <td><a href="{%url 'details' itineraire_id=sortie.itineraire.id sortie_id=sortie.id%}" class="btn btn-outline-primary"> Consulter </a> </td> 
                             <!--seulement pour utilisateur connecté -->
