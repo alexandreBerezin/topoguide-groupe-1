@@ -27,6 +27,9 @@ class SortieForm(ModelForm):
             'experience_groupe': forms.Select(attrs={'class':'form-control'}),
             'meteo': forms.Select(attrs={'class':'form-control'}),
             'difficulte_ressentie': forms.NumberInput(attrs={'class':'form-control'}),
+            'photo1' : forms.FileInput(attrs={'class':'form-control'}),
+            'photo2' : forms.FileInput(attrs={'class':'form-control'}),
+            'photo3' : forms.FileInput(attrs={'class':'form-control'}),
         }
 
 class CommentaireForm(ModelForm):
