@@ -23,7 +23,7 @@
       <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #7e7e68;">
         <div class="container-fluid">
           <a class="navbar-brand" href="">
-            <img src="{% static 'itineraires/images/topoguide.png' %}" alt="Topoguide Logo" style="width:40px;" class="img-fluid"> 
+            <img src="{% static 'itineraires/images/topoguide.png' %}" alt="Topoguide Logo" style="width:50px;" class="img-fluid"> 
           </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
@@ -31,10 +31,10 @@
           <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                  <a class="nav-link" href="{% url 'accueil' %}">Accueil</a>
+                  <a class="nav-link text-light" href="{% url 'accueil' %}">Accueil</a>
               </li>
               <li class="nav-item">
-                  <a class="nav-link" href="{% url 'itineraires' %}">Randonnées</a>
+                  <a class="nav-link text-light" href="{% url 'itineraires' %}">Randonnées</a>
               </li>
               {% block nav-itineraires %}{% endblock nav-itineraires %}
               {% block nav-ajoutsortie %}{% endblock nav-ajoutsortie %}
@@ -58,8 +58,8 @@
         <!-- Jumbotron -->
         <div class=" container-full-bg p-5 text-center shadow-1-strong rounded mb-5 text-black "
              style="background-image: url({% static 'itineraires/images/background.png' %});height: 350px;">
-            <h1 class="mb-3">TOPOGUIDE</h1>
-            <h4 class="mb-3">JOURNAL DE RANDONNÉES</h4>
+            <h1 class="mb-3 text-light ">TOPOGUIDE</h1>
+            <h4 class="mb-3 text-light">JOURNAL DE RANDONNÉES</h4>
 
         </div>
     </header>
