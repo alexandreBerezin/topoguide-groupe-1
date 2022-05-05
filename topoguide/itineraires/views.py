@@ -9,8 +9,6 @@ import folium
 # Create your views here.
 
 # Vue accessible pour les utilisateurs connectés ou non de la même manière
-def accueil(request):
-    return render(request, 'itineraires/accueil.html')
 
 def itineraires(request):
     """ Une fonction qui permet avec une requête de l'utilisateur d'obtenir la liste 
