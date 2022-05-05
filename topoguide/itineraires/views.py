@@ -25,33 +25,38 @@ def itineraires(request):
         render(): réponse Http associant la fonction, le template associé (itineraire.html) et le contexte
         
     """
-    difficulte_estimee=request.GET.get('difficulte_estimee')
+    difficulte_estimee_min=request.GET.get('difficulte_estimee_min')
+    difficulte_estimee_max=request.GET.get('difficulte_estimee_max')
     duree_max=request.GET.get('duree_max')
     duree_min=request.GET.get('duree_min')
     if request.method == 'GET': # If the form is submitted
         search = request.GET.get('search', None)
         itineraire_list = Itineraire.objects.order_by('titre')[:]
-        if difficulte_estimee!=None and difficulte_estimee!='':
-            itineraire_list=itineraire_list.filter(difficulte_estimee=difficulte_estimee)
+        if difficulte_estimee_max!=None and difficulte_estimee_max!='':
+            itineraire_list=itineraire_list.filter(difficulte_estimee__lte=difficulte_estimee_max)
+        if difficulte_estimee_min!=None and difficulte_estimee_min!='':
+            itineraire_list=itineraire_list.filter(difficulte_estimee__gte=difficulte_estimee_min)
         if duree_max!=None and duree_max!='': 
             itineraire_list=itineraire_list.filter(duree_estimee__lte=duree_max)
         if duree_min!=None and duree_min!='' : 
             itineraire_list=itineraire_list.filter(duree_estimee__gte=duree_min)
         context = {
             'itineraire_list': itineraire_list,
-            'search' : search,'difficulte_estimee': difficulte_estimee,'duree_max':duree_max,'duree_min':duree_min
+            'search' : search,'difficulte_estimee_max': difficulte_estimee_max,'difficulte_estimee_min': difficulte_estimee_min,'duree_max':duree_max,'duree_min':duree_min
         }
     else:
         itineraire_list = Itineraire.objects.order_by('titre')[:]
-        if difficulte_estimee!=None and difficulte_estimee!='':
-            itineraire_list=itineraire_list.filter(difficulte_estimee=difficulte_estimee)
+        if difficulte_estimee_max!=None and difficulte_estimee_max!='':
+            itineraire_list=itineraire_list.filter(difficulte_estimee__lte=difficulte_estimee_max)
+        if difficulte_estimee_min!=None and difficulte_estimee_min!='':
+            itineraire_list=itineraire_list.filter(difficulte_estimee__gte=difficulte_estimee_min)
         if duree_max!=None and duree_max!='': 
             itineraire_list=itineraire_list.filter(duree_estimee__lte=duree_max)
         if duree_min!=None and duree_max!='' : 
             itineraire_list=itineraire_list.filter(duree_estimee__gte=duree_min)
         context = {
             'itineraire_list': itineraire_list,
-            'difficulte_estimee': difficulte_estimee,'duree_max':duree_max,'duree_min':duree_min
+            'difficulte_estimee_max': difficulte_estimee_max,'difficulte_estimee_min': difficulte_estimee_min,'duree_max':duree_max,'duree_min':duree_min
         }
     return render(request, 'itineraires/itineraires.html', context)
 
