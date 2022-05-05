@@ -1,5 +1,7 @@
 {% extends "itineraires/base.html" %}
 {% block content %}
+
+
         <div class="container mt-3">
             <h2>
                 <a href="{% url 'sorties' itineraire_id=sortie_detail.itineraire.id %}">{{ sortie_detail.itineraire.titre }}</a> - Sortie de {{ sortie_detail.utilisateur.username }}
@@ -46,8 +48,8 @@
             <table>
               <tr>
                   <td><img class="img-fluid" src= {{sortie_detail.photo1.url}} /></td>
-                  <td><img class="img-fluid" src= {{sortie_detail.photo2.url}} /></td>
-                  <td><img class="img-fluid" src= {{sortie_detail.photo3.url}} /></td>
+                  <td><img class="img-fluid"  src= {{sortie_detail.photo2.url}} /></td>
+                  <td><img class="img-fluid"  src= {{sortie_detail.photo3.url}} /></td>
               </tr>
             </table>
 
