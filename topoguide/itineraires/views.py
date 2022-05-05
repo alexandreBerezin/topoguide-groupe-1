@@ -16,7 +16,7 @@ def itineraires(request):
     """ Une fonction qui permet avec une requête de l'utilisateur d'obtenir la liste 
     des itinéraires disponibles avec leurs différents champs dans la base de données
     Il y a également une fonction de recherche qui permet à l'utilisateur de chercher parmi 
-    les itinéraires existants
+    les itinéraires existants 
 
     Args:
         request : GET de l'utilisateur
@@ -197,8 +197,20 @@ def modif_sortie(request, itineraire_id, sortie_id):
         form = SortieForm(request.POST or None, instance=sortie)
     context = {'new':new,'form' : form, 'itineraire_id' : itineraire_id, 'sortie_id' : sortie_id, 'submitted' : submitted}
     return render(request, 'itineraires/nouvelle_sortie.html', context)
+
+
 def recherche(request):
-    
+    """ Une fonction qui permet avec une requête de l'utilisateur d'obtenir la liste 
+    des itinéraires/et ou sorties répondant à la recherche de l'utilisateur
+
+    Args:
+        request : GET de l'utilisateur
+
+    Returns:
+        render(): réponse Http associant la fonction, le template associé (page_recherche.html)
+        
+    """
+      
     itineraire_list = Itineraire.objects.all()
     sortie_list = Sortie.objects.all()
     search = request.GET.get('search')
