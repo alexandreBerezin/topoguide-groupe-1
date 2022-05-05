@@ -1,13 +1,13 @@
 {% extends "itineraires/base.html" %}
 {% block nav-ajoutsortie %}
 {% if user.is_authenticated %}
-    <li class="nav-item">
-        <a class="nav-link"
+    <li class="nav-item text-light">
+        <a class="nav-link text-light"
            href="{% url 'nouvelle_sortie' itineraire_id=itineraire.id %}">Ajouter une sortie</a>
     </li>
 {% else %}
-  <li class="nav-item">
-    <a class="nav-link"
+  <li class="nav-item text-light">
+    <a class="nav-link text-light"
       href="{% url 'login' %}?next={{ request.get_full_path|urlencode }}">Ajouter une sortie</a>
   </li>
 {% endif %}

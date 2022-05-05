@@ -30,7 +30,7 @@ def itineraires(request):
     duree_min=request.GET.get('duree_min')
     if request.method == 'GET': # If the form is submitted
         search = request.GET.get('search', None)
-        itineraire_list = Itineraire.objects.order_by('titre')[:]
+        itineraire_list = Itineraire.objects.order_by('titre')
         if difficulte_estimee!=None and difficulte_estimee!='':
             itineraire_list=itineraire_list.filter(difficulte_estimee=difficulte_estimee)
         if duree_max!=None and duree_max!='': 
