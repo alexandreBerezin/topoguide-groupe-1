@@ -36,6 +36,7 @@ def itineraires(request):
             itineraire_list=itineraire_list.filter(difficulte_estimee__lte=difficulte_estimee_max)
         if difficulte_estimee_min!=None and difficulte_estimee_min!='':
             itineraire_list=itineraire_list.filter(difficulte_estimee__gte=difficulte_estimee_min)
+
         if duree_max!=None and duree_max!='': 
             itineraire_list=itineraire_list.filter(duree_estimee__lte=duree_max)
         if duree_min!=None and duree_min!='' : 
